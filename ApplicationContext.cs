@@ -9,7 +9,7 @@ namespace ConsoleFlashCards
 {
     public class ApplicationContext : DbContext
     {
-        public DbSet<SubjectOfStudy> SubjectOfStudies => Set<SubjectOfStudy>();
+        public DbSet<Word> Words => Set<Word>();
         public ApplicationContext() => Database.EnsureCreated();
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
