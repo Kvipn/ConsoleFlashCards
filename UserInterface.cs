@@ -27,10 +27,12 @@ namespace ConsoleFlashCards
                     case 1:
                         break;
                     case 2:
+                        LearnWord();
                         break;
                     case 3:
                         break;
-                    case 4:AddTopic();
+                    case 4:
+                        AddWord();
                         break;
                     case 5:
                         printWords();
@@ -42,10 +44,54 @@ namespace ConsoleFlashCards
             }
             while (_state);
         }
-
-        public void AddTopic()
+        void PrintMenu()
         {
-            //исправить чтобы получал не по слову а вводилась тема а потом несколько слов с ней связанных
+            Console.Clear();
+            Console.WriteLine("1.----------");
+            Console.WriteLine("2.Учить слова.");
+            Console.WriteLine("3.Повторить выученное.");
+            Console.WriteLine("4.Добавить слова.");
+            Console.WriteLine("5.Вывести слова.");
+            Console.WriteLine("0.Закончить работу");
+        }
+
+        public void LearnWord()
+        {
+            using (ApplicationContext db = new ApplicationContext())
+            {
+                var words = db.Words.ToArray();
+                List<Word> UnLearnedwordList = words.ToList();
+                List<Word> LeanedwordList = new List<Word>();
+
+                while (UnLearnedwordList.Count != 0)
+                {
+                    foreach (var item in UnLearnedwordList.ToList())
+                    {
+                        Console.WriteLine(item.word);
+                        Console.WriteLine();
+                        Console.WriteLine("Показать полностью");
+                        Console.ReadKey();
+                        Console.Clear();
+                        item.ShowWord();
+                        Console.WriteLine("1 - Выучил слово");
+                        Console.WriteLine("2 - Отложить на повтор");
+                        var res = int.Parse(Console.ReadLine());
+                        Console.Clear();
+                        switch (res)
+                        {
+                            case 1:LeanedwordList.Add(item);
+                                UnLearnedwordList.Remove(item);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+
+        public void AddWord()
+        {
             bool exit = false;
             List<Word> words = new List<Word>();
             do
@@ -59,23 +105,14 @@ namespace ConsoleFlashCards
             }
             while (exit);
 
-            using (ApplicationContext db = new ApplicationContext() )
+            using (ApplicationContext db = new ApplicationContext())
             {
                 db.Words.AddRange(words);
                 db.SaveChanges();
             }
 
         }
-        void PrintMenu()
-        {
-            Console.WriteLine("1.Выбрать тему.");
-            Console.WriteLine("2.Учить слова.");
-            Console.WriteLine("3.Повторить выученное.");
-            Console.WriteLine("4.Добавить свою тему.");
-            Console.WriteLine("5.Вывести слова.");
-            Console.WriteLine("0.Закончить работу");
-        }
-    
+
         void printWords()
         {
             Console.WriteLine("Слова:");
@@ -89,7 +126,7 @@ namespace ConsoleFlashCards
                 Console.ReadKey();
             }
         }
-    
-    
+
+
     }
 }

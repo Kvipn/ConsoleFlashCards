@@ -25,7 +25,7 @@ namespace ConsoleFlashCards
             word.word = Console.ReadLine();
             Console.WriteLine("Введите перевод слова");
             word.translateWord = Console.ReadLine();
-            Console.WriteLine("Введите предложение с примером использованияслова");
+            Console.WriteLine("Введите предложение с примером использования слова");
             word.ExeplesOfUsingWord = Console.ReadLine();
             Console.WriteLine("Введите тему которой соответствует слово");
             word.topicOfWord = Console.ReadLine();
@@ -34,6 +34,7 @@ namespace ConsoleFlashCards
 
         public void ShowWord()
         {
+            Console.WriteLine(topicOfWord);
             Console.WriteLine($"{word} - {translateWord}");
             Console.WriteLine(ExeplesOfUsingWord);
         }
